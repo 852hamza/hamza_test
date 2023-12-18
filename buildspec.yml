@@ -3,8 +3,8 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Installing AWS CLI and jq"
-      - apt-get -y install awscli jq
+      # - echo "Installing AWS CLI and jq"
+      # - apt-get -y install awscli jq
 
       - echo "Fetching SSH key from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id YOUR_SECRET_ID --query SecretString --output text > ssh_key.json
