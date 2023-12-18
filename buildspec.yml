@@ -1,19 +1,16 @@
 version: 0.2
 
 phases:
-
   build:
     commands:
       - echo "Fetching SSH key from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
-      - jq -r .ssh_key ssh_key.pem > ssh_key.pem
-      - echo ssh_key.pem
+      - SSH_KEY=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text | jq -r .ssh_key)
+      - echo $SSH_KEY > ssh_key.pem
       - chmod 600 ssh_key.pem
       - ls -l ssh_key.pem
 
       - echo "Fetching IP address from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text > ip_address.txt
-      - export INSTANCE_IP=$(jq -r .ip ip_address.txt)
+      - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
