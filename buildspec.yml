@@ -2,7 +2,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - aws secretsmanager get-secret-value --secret-id ssh --query Secret --output text > ssh.txt
+      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh.txt
       # - sed -i 's/{"name":" "} //g' file.json > ssh.txt
       - cat ssh.txt
       # - chmod 600 ssh.txt
