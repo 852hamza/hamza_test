@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      # java: corretto11
+      python: 3.8
+    commands:
+      - echo "Install phase"
+
+  # pre_build:
+  #   commands:
+  #     - echo "Pre-build phase"
+
+  build:
+    commands:
+      - echo "Build phase"
+      - aws secretsmanager get-secret-value --secret-id ssh --output text --query SecretString > file.pem
+      - echo "Fetched secret value: file.pem
+      - chmod 600 your-key.pem
+      - ssh -i file.pem $INSTANCE_USER@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+
+  # post_build:
+  #   commands:
+  #     - echo "Post-build phase"
+
+artifacts:
+  files: 
+    - '**/*'
