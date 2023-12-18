@@ -6,7 +6,7 @@ phases:
     commands:
       - echo "Fetching SSH key from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
-      - chmod 400 ssh_key.pem
+      - chmod 600 ssh_key.pem
 
       - echo "Fetching IP address from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text > ip_address.txt
