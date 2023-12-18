@@ -6,6 +6,7 @@ phases:
     commands:
       - echo "Fetching SSH key from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
+      - jq -r .ssh_key ssh_key.json > ssh_key.pem
       - cat ssh_key.pem
       - chmod 600 ssh_key.pem
       - ls -l ssh_key.pem
@@ -13,7 +14,7 @@ phases:
       - echo "Fetching IP address from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text > ip_address.txt
       - export INSTANCE_IP=$(jq -r .ip ip_address.txt)
-      - cat INSTANCE_IP
+      - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
       - ssh -i ssh_key.pem ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
