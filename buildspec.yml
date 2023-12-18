@@ -4,7 +4,7 @@ phases:
     commands:
       # - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh.txt
       # - aws secretsmanager get-secret-value --secret-id ssh --output text | sed 's/{"name":" "} //g' > tmp_ssh.txt && mv tmp_ssh.txt ssh.txt
-      - aws secretsmanager get-secret-value --secret-id ssh --output text | sed 's/{"name":" "} //' > tmp_ssh.txt && mv tmp_ssh.txt ssh.txt
+      - aws secretsmanager get-secret-value --secret-id ssh --output yaml > ssh.txt
 
 
 
