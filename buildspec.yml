@@ -3,7 +3,7 @@ phases:
   build:
     commands:
       - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > file.txt
-      - sed 's/{"name":" "} //g' file.txt > ssh.txt
+      - sed 's/"name":[^,]*,//g' file.txt > ssh.txt
       - cat ssh.txt
       - chmod 600 ssh.txt
       - ls -l ssh.txt
