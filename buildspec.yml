@@ -3,12 +3,17 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo "Fetching SSH key from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh.txt
-      - echo  ssh.txt
-      - cat ssh.txt
-      # - chmod 600 file.pem
-      # - ls -l file.pem
+      # - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh.txt
+      # - echo  ssh.txt
+      # - cat ssh.txt
+      # # - chmod 600 file.pem
+      # # - ls -l file.pem
+      - echo "Fetching secret value from Secrets Manager"
+      - SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id your_secret_id --query SecretString --output text)
+      - PRIVATE_KEY=$(echo "$SECRET_JSON" | jq -r '.name' | sed 's/-----BEGIN RSA PRIVATE KEY-----//' | sed 's/-----END RSA PRIVATE KEY-----//')
+      - echo "$PRIVATE_KEY" > file.pem
+      - cat file.pem  # Print the contents of the PEM file for verification
+      - chmod 600 file.pem
 
       # - echo "Fetching IP address from Secret Manager"
       # - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
