@@ -7,12 +7,12 @@ phases:
       - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
       
       # Extract the value directly if SecretString is a JSON object
-      - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.text
+      - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.txt
       
       # Print the secret value
       
-      - echo $ssh_name
-      - chmod 600 ssh.text
+      - cat ssh.txt
+      - chmod 600 ssh.txt
 
       
       - echo "Fetching IP address from Secret Manager"
@@ -20,5 +20,5 @@ phases:
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i ssh.text ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i ssh.txt ubuntu@"$INSTANCE_IP" "bash /home/ubuntu/script.sh"
 
