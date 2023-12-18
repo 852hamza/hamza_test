@@ -5,7 +5,7 @@ phases:
     commands:
       - echo "Fetching SSH key from Secret Manager"
       # - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
-      aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json > ssh_key.json
+      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json > ssh_key.json
 
       - cat ssh_key.json
       - echo ssh_key.json
