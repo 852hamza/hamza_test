@@ -12,7 +12,7 @@ phases:
       # Print the secret value
       
       - echo $ssh_name
-      - chmod 600 "$SSH_SECRET"
+      - chmod 600 "$ssh_name"
 
       
       - echo "Fetching IP address from Secret Manager"
@@ -20,5 +20,5 @@ phases:
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i "$SSH_SECRET" "ubuntu@$INSTANCE_IP" "bash /home/ubuntu/script.sh"
+      - ssh -i "$ssh_name" ubuntu@"$INSTANCE_IP" "bash /home/ubuntu/script.sh"
 
