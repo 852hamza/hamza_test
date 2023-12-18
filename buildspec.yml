@@ -1,30 +1,23 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      # - echo "Installing AWS CLI and jq"
-      # - apt-get -y install awscli jq
-
-      - echo "Fetching SSH key from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id YOUR_SECRET_ID --query SecretString --output text > ssh_key.json
-      - jq -r .ssh_key < ssh_key.json > ssh_key.pem
-      - chmod 400 ssh_key.pem
-
-      - echo "Fetching IP address from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id YOUR_IP_SECRET_ID --query SecretString --output text > ip_address.txt
-      - export INSTANCE_IP=$(jq -r .ip ip_address.txt)
-
-      - echo "Printing the content of ssh_key.pem"
-      - cat ssh_key.pem
-
-      - echo "Printing the value of INSTANCE_IP"
-      - echo $INSTANCE_IP
 
   build:
     commands:
+      - echo "Fetching SSH key from Secret Manager"
+      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
+      - jq -r .ssh_key ssh_key.json > ssh_key.pem
+      - cat ssh_key.pem
+      - chmod 600 ssh_key.pem
+      - ls -l ssh_key.pem
+
+      - echo "Fetching IP address from Secret Manager"
+      - aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text > ip_address.txt
+      - export INSTANCE_IP=$(jq -r .ip ip_address.txt)
+      - echo $INSTANCE_IP
+
       - echo "Connecting to EC2 instance and running script"
-      - ssh -o StrictHostKeyChecking=no -i ssh_key.pem ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i ssh_key.pem ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
   post_build:
     commands:
