@@ -2,31 +2,22 @@ version: 0.2
 phases:
   build:
     commands:
-      # - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh.txt
-      # - aws secretsmanager get-secret-value --secret-id ssh --output text | sed 's/{"name":" "} //g' > tmp_ssh.txt && mv tmp_ssh.txt ssh.txt
-      # - aws secretsmanager get-secret-value --secret-id ssh --output json > ssh.json
-              # Fetch only secretstring
-     # Fetch only secretstring
+
+      # Fetch only secretstring
       - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
       
       # Extract the value directly if SecretString is a JSON object
       - ssh_name=$(echo $secretstring | jq -r '. | fromjson | .ssh_name')
       
       # Print the secret value
+      
       - echo $ssh_name
 
-
-
-      # - echo $SSH_SECRET
-
-      # - sed -i 's/{"name":" "} //g' file.json > ssh.txt
-      # - cat ssh.json
       # - chmod 600 ssh.txt
-      # - ls -l ssh.txt
       
       - echo "Fetching IP address from Secret Manager"
       - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i $SSH_SECRET -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i $SSH_SECRET  ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
