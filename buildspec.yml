@@ -7,7 +7,7 @@ phases:
       - echo "Fetching SSH key from Secret Manager"
       - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > ssh_key.pem
       - jq -r .ssh_key ssh_key.pem > ssh_key.pem
-      - cat ssh_key.pem
+      - echo ssh_key.pem
       - chmod 600 ssh_key.pem
       - ls -l ssh_key.pem
 
