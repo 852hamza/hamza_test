@@ -6,7 +6,7 @@ phases:
       # - aws secretsmanager get-secret-value --secret-id ssh --output text | sed 's/{"name":" "} //g' > tmp_ssh.txt && mv tmp_ssh.txt ssh.txt
       # - aws secretsmanager get-secret-value --secret-id ssh --output yaml > ssh.txt
 
-      - echo $MY_SECRET_KEY
+      - echo $SSH_SECRET
 
       # - sed -i 's/{"name":" "} //g' file.json > ssh.txt
       - cat ssh.txt
