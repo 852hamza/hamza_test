@@ -9,7 +9,7 @@ phases:
       # # - ls -l file.pem
       - echo "Fetching secret value from Secrets Manager"
       # - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text
-      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text | jq -r .ssh.secret value
+      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text | jq -r .ssh.secret
 
       - chmod 600 file.pem
 
