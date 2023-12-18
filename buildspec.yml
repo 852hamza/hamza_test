@@ -9,18 +9,18 @@ phases:
       # # - chmod 600 file.pem
       # # - ls -l file.pem
       - echo "Fetching secret value from Secrets Manager"
-      - aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text > secret.json
-      - PRIVATE_KEY=$(echo secret.json  | jq -r '.name' | sed 's/-----BEGIN RSA PRIVATE KEY-----//' | sed 's/-----END RSA PRIVATE KEY-----//')
+      - SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id your_secret_id --query SecretString --output text)
+      - PRIVATE_KEY=$(echo SECRET_JSON  | jq -r '.name' | sed 's/-----BEGIN RSA PRIVATE KEY-----//' | sed 's/-----END RSA PRIVATE KEY-----//')
       - echo "$PRIVATE_KEY" > file.pem
       - cat file.pem  # Print the contents of the PEM file for verification
       - chmod 600 file.pem
 
-      # - echo "Fetching IP address from Secret Manager"
-      # - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
-      # - echo $INSTANCE_IP
+      - echo "Fetching IP address from Secret Manager"
+      - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
+      - echo $INSTANCE_IP
 
-      # - echo "Connecting to EC2 instance and running script"
-      # - ssh -i file.pem -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - echo "Connecting to EC2 instance and running script"
+      - ssh -i file.pem -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
 # post_build:
 #   commands:
