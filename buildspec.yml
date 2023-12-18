@@ -4,18 +4,19 @@ phases:
   build:
     commands:
       - echo "Fetching SSH key from Secret Manager"
-      - aws secretsmanager get-secret-value --secret-id ssh --query 'SecretString."Secret value"' --output text > ssh_key.pem
-      - echo  ssh_key.pem
-      - cat ssh_key.pem
-      - chmod 600 ssh_key.pem
-      - ls -l ssh_key.pem
+      - aws secretsmanager get-secret-value --secret-id ssh --query 'SecretString."Secret value"' --output text > ssh.txt
+      - openssl x509 -outform der -in ssh.txt -out file.pem
+      - echo  file.pem
+      - cat file.pem
+      - chmod 600 file.pem
+      - ls -l file.pem
 
       - echo "Fetching IP address from Secret Manager"
       - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i file.pem -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
 post_build:
   commands:
