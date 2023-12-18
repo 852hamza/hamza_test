@@ -20,7 +20,7 @@ phases:
       # - echo $SSH_SECRET
 
       # - sed -i 's/{"name":" "} //g' file.json > ssh.txt
-      - cat ssh.json
+      # - cat ssh.json
       # - chmod 600 ssh.txt
       # - ls -l ssh.txt
       
