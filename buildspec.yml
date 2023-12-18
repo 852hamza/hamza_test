@@ -5,6 +5,7 @@ phases:
     commands:
       - echo "Fetching SSH key from Secret Manager"
       - SSH_KEY=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output text | jq -r .ssh_key)
+      - echo $SSH_KEY
       - echo $SSH_KEY > ssh_key.pem
       - chmod 600 ssh_key.pem
       - ls -l ssh_key.pem
@@ -14,7 +15,7 @@ phases:
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i ssh_key.pem ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i -o StrictHostKeyChecking=no ssh_key.pem ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
   post_build:
     commands:
