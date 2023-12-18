@@ -12,7 +12,7 @@ phases:
       # Print the secret value
       
       - echo $ssh_name
-      - chmod 600 "$ssh_name"
+      # - chmod 600 "$ssh_name"
 
       
       - echo "Fetching IP address from Secret Manager"
