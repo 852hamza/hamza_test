@@ -9,8 +9,8 @@ phases:
       # # - chmod 600 file.pem
       # # - ls -l file.pem
       - echo "Fetching secret value from Secrets Manager"
-      - SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id your_secret_id --query SecretString --output text)
-      - PRIVATE_KEY=$(echo "$SECRET_JSON" | jq -r '.name' | sed 's/-----BEGIN RSA PRIVATE KEY-----//' | sed 's/-----END RSA PRIVATE KEY-----//')
+      - aws secretsmanager get-secret-value --secret-id your_secret_id --query SecretString --output text > secret.json
+      - PRIVATE_KEY=$(echo secret.json  | jq -r '.name' | sed 's/-----BEGIN RSA PRIVATE KEY-----//' | sed 's/-----END RSA PRIVATE KEY-----//')
       - echo "$PRIVATE_KEY" > file.pem
       - cat file.pem  # Print the contents of the PEM file for verification
       - chmod 600 file.pem
