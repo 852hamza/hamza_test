@@ -4,7 +4,7 @@ phases:
   build:
     commands:
       - echo "Fetching SSH key from Secret Manager"
-      - SECRET=$(aws secretsmanager get-secret-value --secret-id ssh --query 'SecretString."Secret value"' --output text | sed 's/{"name": "//' | sed 's/ "}//')
+      - SECRET=$(aws secretsmanager get-secret-value --secret-id ssh --query 'SecretString."Secret value"' --output json | jq -r '. // empty')
       - echo $SECRET > ssh_key.pem
       - cat ssh_key.pem
       - chmod 600 ssh_key.pem
