@@ -6,13 +6,15 @@ phases:
       # - aws secretsmanager get-secret-value --secret-id ssh --output text | sed 's/{"name":" "} //g' > tmp_ssh.txt && mv tmp_ssh.txt ssh.txt
       # - aws secretsmanager get-secret-value --secret-id ssh --output json > ssh.json
               # Fetch only secretstring
-      - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
-        
-        # Fetch the value of secretstring
-      - secretvalue=$(echo $secretstring | jq -r '.name')
-        
-        # Print the secret value
+     # Fetch only secretstring
+     - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
+      
+      # Extract the value directly if SecretString is a JSON object
+      - secretvalue=$(echo $secretstring | jq -r '.ssh_name')
+      
+      # Print the secret value
       - echo $secretvalue
+
 
 
       # - echo $SSH_SECRET
