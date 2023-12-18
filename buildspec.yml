@@ -10,10 +10,10 @@ phases:
      - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
       
       # Extract the value directly if SecretString is a JSON object
-      - secretvalue=$(echo $secretstring | jq -r '.ssh_name')
+     - secretvalue=$(echo $secretstring | jq -r '.ssh_name')
       
       # Print the secret value
-      - echo $secretvalue
+     - echo $secretvalue
 
 
 
