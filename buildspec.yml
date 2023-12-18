@@ -17,3 +17,6 @@ phases:
       - echo "Connecting to EC2 instance and running script"
       - ssh -i ssh_key.pem -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
+post_build:
+  commands:
+    - echo "Build completed on $(date)"
