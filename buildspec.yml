@@ -3,18 +3,17 @@ phases:
   build:
     commands:
 
-      # Fetch only secretstring
-      # - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
+      # Fetch only secret
       - aws secretsmanager get-secret-value --secret-id ssh_ok --query SecretString --output text > ssh.txt
-      - grep -v '^$' ssh.txt > output.txt && mv output.txt ssh.txt      
-      - cat ssh.txt
+      # - grep -v '^$' ssh.txt > output.txt && mv output.txt ssh.txt      
+      # - cat ssh.txt
       - chmod 600 ssh.txt
-      - ls -l ssh.txt
+      # - ls -l ssh.txt
 
       
       - echo "Fetching IP address from Secret Manager"
       - export INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
-      - echo $INSTANCE_IP
+      # - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
       - ssh -i ssh.txt -o StrictHostKeyChecking=no ubuntu@$INSTANCE_IP "sudo su -c 'bash /home/ubuntu/script.sh'"
