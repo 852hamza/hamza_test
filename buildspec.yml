@@ -6,9 +6,7 @@ phases:
       # Fetch only secretstring
       # - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
       - aws secretsmanager get-secret-value --secret-id ssh_ok --query SecretString --output text > ssh.txt
-      # Extract the value directly if SecretString is a JSON object
-      # - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.txt
-      
+      - grep -v '^$' ssh.txt > output.txt && mv output.txt ssh.txt      
       - cat ssh.txt
       - chmod 600 ssh.txt
       - ls -l ssh.txt
