@@ -16,7 +16,7 @@ phases:
       
       - echo "Fetching IP address from Secret Manager"
       - export INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
-      - echo INSTANCE_IP
+      - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
       - ssh -i ssh.txt ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
