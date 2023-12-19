@@ -17,6 +17,6 @@ phases:
       - echo $INSTANCE_IP
 
       - echo "Connecting to EC2 instance and running script"
-      - ssh -i ssh.txt ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
+      - ssh -i  -o StrictHostKeyChecking=no ssh.txt ubuntu@$INSTANCE_IP "bash /home/ubuntu/script.sh"
 
 
