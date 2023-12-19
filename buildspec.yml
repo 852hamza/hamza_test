@@ -5,7 +5,7 @@ phases:
 
       # Fetch only secretstring
       # - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
-      - aws secretsmanager get-secret-value --secret-id ssh_ok  --output text > ssh.txt
+      - aws secretsmanager get-secret-value --secret-id ssh_ok --query SecretString --output text > ssh.txt
       # Extract the value directly if SecretString is a JSON object
       # - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.txt
       
@@ -14,12 +14,12 @@ phases:
       - ls -l ssh.txt
 
       
-      - echo "Fetching IP address from Secret Manager"
-      - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
-      - echo $INSTANCE_IP
+      # - echo "Fetching IP address from Secret Manager"
+      # - INSTANCE_IP=$(aws secretsmanager get-secret-value --secret-id ip --query SecretString --output text | jq -r .ip)
+      # - echo $INSTANCE_IP
 
-      - echo "Connecting to EC2 instance and running script"
-      - echo "ssh -i ssh.txt ubuntu@$INSTANCE_IP \"bash /home/ubuntu/script.sh\""
-      - ssh -i ssh.txt ubuntu@"$INSTANCE_IP" "bash /home/ubuntu/script.sh"
+      # - echo "Connecting to EC2 instance and running script"
+      # - echo "ssh -i ssh.txt ubuntu@$INSTANCE_IP \"bash /home/ubuntu/script.sh\""
+      # - ssh -i ssh.txt ubuntu@"$INSTANCE_IP" "bash /home/ubuntu/script.sh"
 
 
