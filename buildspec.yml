@@ -4,21 +4,14 @@ phases:
     commands:
 
       # Fetch only secretstring
-      - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
-      
+      # - secretstring=$(aws secretsmanager get-secret-value --secret-id ssh --query SecretString --output json)
+      - aws secretsmanager get-secret-value --secret-id ssh_ok  --output text > ssh.txt
       # Extract the value directly if SecretString is a JSON object
-      - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.txt
+      # - echo $secretstring | jq -r '. | fromjson | .ssh_name' > ssh.txt
       
-      # # Print the secret value
-      
-      # - cat ssh.txt
-      # Extract content between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----" and format as JSON
-      - PRIVATE_KEY_JSON=$(sed -n '/-----BEGIN RSA PRIVATE KEY-----/{:a;N;/-----END RSA PRIVATE KEY-----/!ba;s/\n/\\n/g;p}' ssh.txt | jq -Rs .)
-
-      # Save the JSON-formatted content to a file
-      - echo $PRIVATE_KEY_JSON > private_key.txt
-      - cat private_key.txt
-      # - chmod 600 ssh.txt
+      - cat ssh.txt
+      - chmod 600 ssh.txt
+      - ls -l ssh.txt
 
       
       # - echo "Fetching IP address from Secret Manager"
