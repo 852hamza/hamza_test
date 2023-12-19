@@ -17,7 +17,7 @@ phases:
 
       # Save the JSON-formatted content to a file
       - echo $PRIVATE_KEY_JSON > private_key.txt
-
+      - cat private_key.txt
       # - chmod 600 ssh.txt
 
       
